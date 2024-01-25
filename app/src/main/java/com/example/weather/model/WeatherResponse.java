@@ -2,7 +2,6 @@ package com.example.weather.model;
 
 public class WeatherResponse {
 
-    public static class WeatherData {
         private Location location;
         private CurrentWeather current;
 
@@ -15,8 +14,6 @@ public class WeatherResponse {
         public CurrentWeather getCurrent() {
             return current;
         }
-
-    }
 
     public static class Location {
         private String name;  // City name
@@ -81,6 +78,18 @@ public class WeatherResponse {
         private double vis_km; // Visibility in kilometers
         private double uv; // UV Index
 
+        
+        private double temp_f;
+        private double wind_mph;
+        private int wind_degree;
+        private double pressure_in;
+        private double precip_in;
+
+        private double feelslike_f;
+        private double vis_miles;
+        private double gust_mph;
+        private double gust_kph;
+
 
         // Getters and setters
 
@@ -138,6 +147,42 @@ public class WeatherResponse {
 
         public double getUv() {
             return uv;
+        }
+
+        public double getTemp_f() {
+            return temp_f;
+        }
+
+        public double getWind_mph() {
+            return wind_mph;
+        }
+
+        public int getWind_degree() {
+            return wind_degree;
+        }
+
+        public double getPressure_in() {
+            return pressure_in;
+        }
+
+        public double getPrecip_in() {
+            return precip_in;
+        }
+
+        public double getFeelslike_f() {
+            return feelslike_f;
+        }
+
+        public double getVis_miles() {
+            return vis_miles;
+        }
+
+        public double getGust_mph() {
+            return gust_mph;
+        }
+
+        public double getGust_kph() {
+            return gust_kph;
         }
 
 
