@@ -38,4 +38,9 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     implementation ("com.squareup.retrofit2:retrofit:2.9.0")
     implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation ("io.reactivex.rxjava3:rxjava:3.0.2")
+    implementation ("androidx.datastore:datastore-preferences-rxjava3:1.0.0")
+    implementation ("androidx.datastore:datastore-preferences:1.0.0")
+    implementation ("androidx.lifecycle:lifecycle-viewmodel:2.7.0")
+
 }
