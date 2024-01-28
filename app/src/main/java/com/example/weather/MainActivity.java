@@ -1,8 +1,8 @@
 package com.example.weather;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.weather.api.WeatherApi;
+import com.example.weather.dataStore.DataStoreManager;
 import com.example.weather.model.WeatherResponse;
 
 import retrofit2.Call;
@@ -25,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
     private static final String BASE_URL = "https://api.weatherapi.com/v1/";
     private WeatherApi weatherApi;
 
+    private DataStoreManager dataStoreManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +39,11 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 
         weatherApi = retrofit.create(WeatherApi.class);
+        dataStoreManager = new DataStoreManager(this);
+
+        // Navigate to SecondActivity
+
+
 
         Button btn = findViewById(R.id.button);
 
@@ -48,14 +56,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        findViewById(R.id.btnNavigateSecond).setOnClickListener(view -> {
+            Intent intent = new Intent(MainActivity.this, SecondActivity.class);
+            startActivity(intent);
+        });
+
     }
 
     private void onButtonClick(String userInput) {
+        //use DataStoreManager to save the user input
+
+
         // Call the API
         Call<WeatherResponse> call = weatherApi.getCurrent("b7e18683343f4da98a7100504242501", userInput);
-
-        // Log the request URL for debugging
-        Log.d("Weather", "Request URL: " + call.request().url().toString());
 
         call.enqueue(new Callback<WeatherResponse>() {
             @Override
@@ -65,25 +78,43 @@ public class MainActivity extends AppCompatActivity {
 
                     if (weatherResponse != null) {
                         String cityName = weatherResponse.getLocation().getName();
-                        String test = weatherResponse.getCurrent().getWind_dir();
+                        dataStoreManager.saveStr("cityName", cityName);
+                        String windDir = weatherResponse.getCurrent().getWind_dir();
+                        dataStoreManager.saveStr("windDir", windDir);
                         int cloud = weatherResponse.getCurrent().getCloud();
-
-                        Log.d("Weather", "Weather City: " + cityName + ", Cloud: " + cloud);
+                        dataStoreManager.saveInt("cloud", cloud);
+                        String condition = weatherResponse.getCurrent().getCondition().getText();
+                        dataStoreManager.saveStr("condition", condition);
+                        Double degreesC = weatherResponse.getCurrent().getTemp_c();
+                        dataStoreManager.saveDbl("degreesC", degreesC);
 
                         // Uncomment and complete the following code if you want to update the UI
-                         TextView tvResult = findViewById(R.id.textViewWeather);
-                         tvResult.setText(test);
+                        TextView tvCity = findViewById(R.id.textViewWeatherCity);
+                        TextView tvWindDir = findViewById(R.id.textViewWeatherWindir);
+                        TextView tvCloud = findViewById(R.id.textViewWeatherCloud);
+                        TextView tvCondition = findViewById(R.id.textViewWeatherCondition);
+                        TextView tvDegreesC = findViewById(R.id.textViewWeatherDegreeC);
+                        tvCity.setText("City: " + cityName);
+                        tvWindDir.setText("Wind direction: " + windDir);
+                        tvCloud.setText("Cloud percentage: " + cloud  +"%");
+                        tvCondition.setText("Condition: " + condition);
+                        tvDegreesC.setText("Temperature: " + degreesC + "°C");
+                        
 
+
+
+                    } else {
+                        Log.e("Weather", "Error: " + response.code());
+                        TextView tvResult = findViewById(R.id.textViewWeatherCity);
+                        tvResult.setText("Not found");
                     }
-                } else {
-                    Log.e("Weather", "Error: " + response.code());
                 }
             }
-
             @Override
             public void onFailure(Call<WeatherResponse> call, Throwable t) {
                 Log.e("Weather", "Failure: " + t.getMessage());
             }
         });
     }
+
 }
