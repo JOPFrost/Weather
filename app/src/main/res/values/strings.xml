@@ -2,4 +2,6 @@
     <string name="app_name">Weather</string>
     <string name="city_hint">Type in town to check weather in</string>
     <string name="city_search_button">Search</string>
+    <string name="navigate_history">Navigate to History</string>
+    <string name="navigate_search">Navigate to Search</string>
 </resources>
