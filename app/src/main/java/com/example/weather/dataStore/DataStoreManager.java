@@ -13,16 +13,25 @@ import androidx.datastore.rxjava3.*;
 import java.io.File;
 import java.util.concurrent.Callable;
 
+import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Single;
 
 public class DataStoreManager {
 
     private final RxDataStore<Preferences> dataStore;
+    private static DataStoreManager instance;
 
     public DataStoreManager(Context context) {
         this.dataStore =
-                new RxPreferenceDataStoreBuilder(context, /*name=*/ "settings-weather").build();
+                new RxPreferenceDataStoreBuilder(context, "settings-weather").build();
+    }
+
+    public static synchronized DataStoreManager getInstance(Context context) {
+        if (instance == null) {
+            instance = new DataStoreManager(context.getApplicationContext());
+        }
+        return instance;
     }
 
     public Flowable<Integer> getPreferencesIntKey(String name) {

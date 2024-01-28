@@ -1,6 +1,7 @@
 package com.example.weather;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.datastore.core.DataStore;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +14,8 @@ import android.widget.TextView;
 import com.example.weather.api.WeatherApi;
 import com.example.weather.dataStore.DataStoreManager;
 import com.example.weather.model.WeatherResponse;
+
+import java.util.prefs.Preferences;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -28,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
     private DataStoreManager dataStoreManager;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 
         weatherApi = retrofit.create(WeatherApi.class);
-        dataStoreManager = new DataStoreManager(this);
+        dataStoreManager = DataStoreManager.getInstance(this);
 
         // Navigate to SecondActivity
 
@@ -79,14 +83,19 @@ public class MainActivity extends AppCompatActivity {
                     if (weatherResponse != null) {
                         String cityName = weatherResponse.getLocation().getName();
                         dataStoreManager.saveStr("cityName", cityName);
+                        
                         String windDir = weatherResponse.getCurrent().getWind_dir();
                         dataStoreManager.saveStr("windDir", windDir);
+                        
                         int cloud = weatherResponse.getCurrent().getCloud();
                         dataStoreManager.saveInt("cloud", cloud);
+                        
                         String condition = weatherResponse.getCurrent().getCondition().getText();
                         dataStoreManager.saveStr("condition", condition);
+                        
                         Double degreesC = weatherResponse.getCurrent().getTemp_c();
                         dataStoreManager.saveDbl("degreesC", degreesC);
+                        
 
                         // Uncomment and complete the following code if you want to update the UI
                         TextView tvCity = findViewById(R.id.textViewWeatherCity);
