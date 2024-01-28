@@ -1,17 +1,12 @@
 package com.example.weather.dataStore;
 
 import android.content.Context;
-import androidx.datastore.core.DataStore;
-import androidx.datastore.core.Serializer;
 import androidx.datastore.preferences.core.MutablePreferences;
 import androidx.datastore.preferences.core.Preferences;
 
 import androidx.datastore.preferences.core.PreferencesKeys;
 import androidx.datastore.preferences.rxjava3.RxPreferenceDataStoreBuilder;
 import androidx.datastore.rxjava3.*;
-
-import java.io.File;
-import java.util.concurrent.Callable;
 
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Flowable;
@@ -66,7 +61,6 @@ public class DataStoreManager {
     {
         return this.dataStore.updateDataAsync(prefsIn -> {
             MutablePreferences mutablePreferences = prefsIn.toMutablePreferences();
-            //String current = prefsIn.get(USERNAME_KEY);
             mutablePreferences.set(PreferencesKeys.intKey(name), myInt);
             return Single.just(mutablePreferences);
         });
@@ -76,7 +70,6 @@ public class DataStoreManager {
     {
         return this.dataStore.updateDataAsync(prefsIn -> {
             MutablePreferences mutablePreferences = prefsIn.toMutablePreferences();
-            //String current = prefsIn.get(USERNAME_KEY);
             mutablePreferences.set(PreferencesKeys.stringKey(name), myStr);
             return Single.just(mutablePreferences);
         });
@@ -86,7 +79,6 @@ public class DataStoreManager {
     {
         return this.dataStore.updateDataAsync(prefsIn -> {
             MutablePreferences mutablePreferences = prefsIn.toMutablePreferences();
-            //String current = prefsIn.get(USERNAME_KEY);
             mutablePreferences.set(PreferencesKeys.longKey(name), myLng);
             return Single.just(mutablePreferences);
         });
@@ -96,7 +88,6 @@ public class DataStoreManager {
     {
         return this.dataStore.updateDataAsync(prefsIn -> {
             MutablePreferences mutablePreferences = prefsIn.toMutablePreferences();
-            //String current = prefsIn.get(USERNAME_KEY);
             mutablePreferences.set(PreferencesKeys.doubleKey(name), myDbl);
             return Single.just(mutablePreferences);
         });

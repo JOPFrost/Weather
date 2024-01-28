@@ -1,8 +1,6 @@
 package com.example.weather;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.datastore.core.DataStore;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,8 +12,6 @@ import android.widget.TextView;
 import com.example.weather.api.WeatherApi;
 import com.example.weather.dataStore.DataStoreManager;
 import com.example.weather.model.WeatherResponse;
-
-import java.util.prefs.Preferences;
 
 import retrofit2.Call;
 import retrofit2.Callback;
