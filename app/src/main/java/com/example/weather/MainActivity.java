@@ -5,6 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.weather.api.WeatherApi;
@@ -34,7 +37,17 @@ public class MainActivity extends AppCompatActivity {
 
         weatherApi = retrofit.create(WeatherApi.class);
 
-        onButtonClick("Brno");
+        Button btn = findViewById(R.id.button);
+
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EditText userInputEditText = findViewById(R.id.editTextText);
+                String userInput = userInputEditText.getText().toString();
+                onButtonClick(userInput);
+            }
+        });
+
     }
 
     private void onButtonClick(String userInput) {
@@ -52,13 +65,15 @@ public class MainActivity extends AppCompatActivity {
 
                     if (weatherResponse != null) {
                         String cityName = weatherResponse.getLocation().getName();
+                        String test = weatherResponse.getCurrent().getWind_dir();
                         int cloud = weatherResponse.getCurrent().getCloud();
 
                         Log.d("Weather", "Weather City: " + cityName + ", Cloud: " + cloud);
 
                         // Uncomment and complete the following code if you want to update the UI
-                        // TextView tvResult = findViewById(R.id.result);
-                        // tvResult.setText("City: " + cityName + ", Cloud: " + cloud);
+                         TextView tvResult = findViewById(R.id.textViewWeather);
+                         tvResult.setText(test);
+
                     }
                 } else {
                     Log.e("Weather", "Error: " + response.code());
